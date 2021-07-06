@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductService {
-  Firestore _firestore = Firestore.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String ref = 'Products';
 
   void uploadProduct({
@@ -17,10 +17,12 @@ class ProductService {
     int quantity,
     bool featured,
     bool favorite,
+    List description,
+    List keyFeatures,
   }) {
     var id = Uuid();
     String productId = id.v1();
-    _firestore.collection(ref).document(productId).setData({
+    _firestore.collection(ref).doc(productId).set({
       'name': productName,
       'id': productId,
       'brand': brand,
@@ -33,16 +35,15 @@ class ProductService {
       'colors': colors,
       'featured': featured,
       'favorite': favorite,
+      'description':description,
+      'keyFeatures':keyFeatures
     });
   }
 
-//  'size': size,
-//  'images': images,
-//  'price': price,
-//  'quantity': quantity
+
 
   Future<List<DocumentSnapshot>> getBrand() => _firestore
       .collection(ref)
-      .getDocuments()
-      .then((snaps) => snaps.documents);
+      .get()
+      .then((snaps) => snaps.docs);
 }

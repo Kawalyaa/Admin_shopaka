@@ -23,6 +23,13 @@ class _AddProductsState extends State<AddProducts> {
 
   TextEditingController productNameController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+    TextEditingController keyFeatureController = TextEditingController();
+    TextEditingController colorController = TextEditingController();
+
+      
+
+
   final priceController = TextEditingController();
   final oldPriceController = TextEditingController();
   List<DocumentSnapshot> brands = <DocumentSnapshot>[];
@@ -37,6 +44,8 @@ class _AddProductsState extends State<AddProducts> {
   Color grey = Colors.grey;
   List<String> selectedSize = [];
   List<String> selectedColor = [];
+  List<String> description = [];
+  List<String> keyFeatures = [];
   bool isFeatured = false;
   bool isFavorite = false;
   File image1;
@@ -56,14 +65,14 @@ class _AddProductsState extends State<AddProducts> {
 
   List<DropdownMenuItem<String>> getCategoriesDropdown() {
     //==Get items from brands list insert them in items list
-    List<DropdownMenuItem<String>> items = new List();
+    List<DropdownMenuItem<String>> items = [];
     for (int i = 0; i < categories.length; i++) {
       setState(() {
         items.insert(
             0,
             DropdownMenuItem(
-                child: Text(categories[i].data['categoryName']),
-                value: categories[i].data['categoryName']));
+                child: Text(categories[i]['categoryName']),
+                value: categories[i]['categoryName']));
       });
     }
     return items;
@@ -78,8 +87,8 @@ class _AddProductsState extends State<AddProducts> {
       items.insert(
         0,
         DropdownMenuItem(
-          child: Text(brands[i].data['BrandName']),
-          value: brands[i].data['BrandName'],
+          child: Text(brands[i]['BrandName']),
+          value: brands[i]['BrandName'],
         ),
       );
     }
@@ -94,7 +103,8 @@ class _AddProductsState extends State<AddProducts> {
       categories = data;
       //set getCategoriesDropdown list value = categoriesDropDown list
       categoriesDropDown = getCategoriesDropdown();
-      _currentCategory = categories[0].data['categoryName'];
+     // _currentCategory = categories[0].data['categoryName';
+      _currentCategory = categories[0]['categoryName'];
     });
   }
 
@@ -104,7 +114,7 @@ class _AddProductsState extends State<AddProducts> {
     brands = data;
     // Set getBrandDropDown list values to brandsDropDown list
     brandsDropDown = getBrandDropDown();
-    _currentBrand = brands[0].data['BrandName'];
+    _currentBrand = brands[0]['BrandName'];
   }
 
   void _selectImage(Future<File> pickImage, int imageNumber) async {
@@ -237,8 +247,8 @@ class _AddProductsState extends State<AddProducts> {
                             validator: (value) {
                               if (value.isEmpty) {
                                 return ('Field should Not be empty');
-                              } else if (value.length > 10) {
-                                return ('Product name should not exceed 10 letters');
+                              } else if (value.length > 18) {
+                                return ('Product name should not exceed 18 letters');
                               } else
                                 return null;
                             },
@@ -314,6 +324,48 @@ class _AddProductsState extends State<AddProducts> {
                             return null;
                           },
                         ),
+
+                        TextFormField(
+                          controller: descriptionController,
+                          //keyboardType: TextInputType.number,
+                          decoration: InputDecoration(hintText: 'Description'),
+                          // validator: (value) {
+                          //   if (value.isEmpty) {
+                          //     return ('Description field should not be empty');
+                          //   }
+                          //   return null;
+                          // },
+                        ),
+                        ElevatedButton(onPressed: (){
+                          if(descriptionController.text.isNotEmpty){
+                          description.add(descriptionController.text);
+                          descriptionController.clear();
+                          }
+                        }, child: Text('Add Description')),
+
+
+
+                          TextFormField(
+                          controller: keyFeatureController,
+                          //keyboardType: TextInputType.number,
+                          decoration: InputDecoration(hintText: 'Key Features eg -something'),
+                          // validator: (value) {
+                          //   if (value.isEmpty) {
+                          //     return ('Key Features field should not be empty');
+                          //   }
+                          //   return null;
+                          // },
+                        ),
+
+                         ElevatedButton(onPressed: (){
+                            if(keyFeatureController.text.isNotEmpty){
+                          keyFeatures.add(keyFeatureController.text);
+                          keyFeatureController.clear();
+                          }
+
+                         }, child: Text('Add Key Features')),
+
+
                         Row(
                           children: <Widget>[
                             Checkbox(
@@ -418,6 +470,35 @@ class _AddProductsState extends State<AddProducts> {
                             Text('brown'),
                           ],
                         ),
+
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Or Type Color',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+
+                          TextFormField(
+                          controller: colorController,
+                          //keyboardType: TextInputType.number,
+                          decoration: InputDecoration(hintText: 'Add your color eg mint green'),
+                          // validator: (value) {
+                          //   if (value.isEmpty) {
+                          //     return ('Key Features field should not be empty');
+                          //   }
+                          //   return null;
+                          // },
+                        ),
+
+                         ElevatedButton(onPressed: (){
+                            if(colorController.text.isNotEmpty){
+                          selectedColor.add(colorController.text);
+                          colorController.clear();
+                          }
+
+                         }, child: Text('Add Color')),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -513,20 +594,22 @@ class _AddProductsState extends State<AddProducts> {
               '3${DateTime.now().millisecondsSinceEpoch.toString()}jpg';
 
           //=====Upload images=====
-          StorageUploadTask task1 =
+          UploadTask task1 =
               storage.ref().child(picture1).putFile(image1);
-          StorageUploadTask task2 =
+          UploadTask task2 =
               storage.ref().child(picture2).putFile(image2);
-          StorageUploadTask task3 =
+          UploadTask task3 =
               storage.ref().child(picture3).putFile(image3);
 
           //======Check if last image is uploaded then do something====
-          StorageTaskSnapshot snapshot1 =
-              await task1.onComplete.then((snapShot) => snapShot);
-          StorageTaskSnapshot snapshot2 =
-              await task2.onComplete.then((snapShot) => snapShot);
+          TaskSnapshot snapshot1 =
+              await task1.then((snapShot) => snapShot);
+          TaskSnapshot snapshot2 =
+              await task2.then((snapShot) => snapShot);
 
-          task3.onComplete.then((snapshot3) async {
+              
+
+          task3.then((snapshot3) async {
             //====Then get the image url===
             imageUrl1 = await snapshot1.ref.getDownloadURL();
             imageUrl2 = await snapshot2.ref.getDownloadURL();
@@ -544,6 +627,8 @@ class _AddProductsState extends State<AddProducts> {
               favorite: isFavorite,
               featured: isFeatured,
               quantity: int.parse(quantityController.text),
+              description: description,
+              keyFeatures: keyFeatures,
             );
             _formKey.currentState.reset();
             setState(() => isLoading = false);

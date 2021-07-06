@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class CategoryServices {
-  Firestore _firestore = Firestore.instance;
+ FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _ref = 'Category';
 
   void createCategory(String name) {
@@ -11,20 +11,20 @@ class CategoryServices {
 
     _firestore
         .collection(_ref)
-        .document(categoryId)
-        .setData({'categoryName': name});
+        .doc(categoryId)
+        .set({'categoryName': name});
   }
 
   Future<List<DocumentSnapshot>> getCategories() => _firestore
       .collection(_ref)
-      .getDocuments()
-      .then((snaps) => snaps.documents);
+      .get()
+      .then((snaps) => snaps.docs);
 
   Future<List<DocumentSnapshot>> getSuggestions(String suggestion) => _firestore
           .collection(_ref)
           .where('categoryName', isEqualTo: suggestion)
-          .getDocuments()
+          .get()
           .then((snap) {
-        return snap.documents;
+        return snap.docs;
       });
 }
