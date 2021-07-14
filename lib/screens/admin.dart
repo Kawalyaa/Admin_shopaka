@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:shopla_ecommerce_app/components/adminCard.dart';
 import 'package:shopla_ecommerce_app/db/category.dart';
 import 'package:shopla_ecommerce_app/db/brand.dart';
+import 'package:shopla_ecommerce_app/model/products_model.dart';
+import 'package:shopla_ecommerce_app/model/user_model.dart';
 import 'package:shopla_ecommerce_app/screens/add_products.dart';
+import 'package:shopla_ecommerce_app/screens/products_screen.dart';
 
 enum Page { DASHBOARD, MANAGE }
 
@@ -25,7 +29,7 @@ class _AdminState extends State<Admin> {
   CategoryServices categoryServices = CategoryServices();
   BrandServices brandServices = BrandServices();
 
-  Widget _loadScreen() {
+  Widget _loadScreen({List products,List users}) {
     switch (_selectedPage) {
       case Page.DASHBOARD:
         return Column(
@@ -70,7 +74,7 @@ class _AdminState extends State<Admin> {
                         color: Colors.black,
                       ),
                       iconName: 'Users',
-                      value: '800',
+                      value: '${users?.length??0}',
                     ),
                   ),
                   Padding(
@@ -90,13 +94,15 @@ class _AdminState extends State<Admin> {
                     padding: const EdgeInsets.all(5.0),
                     child: SingleCard(
                       activeColor: activeColor,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, ProductsScreen.id,);
+                      },
                       icon: Icon(
                         Icons.track_changes,
                         color: Colors.black,
                       ),
                       iconName: 'Products',
-                      value: '120',
+                      value: '${products?.length??0}',
                     ),
                   ),
                   Padding(
@@ -288,6 +294,9 @@ class _AdminState extends State<Admin> {
 
   @override
   Widget build(BuildContext context) {
+     List<ProductModel>   allProducts = Provider.of<List<ProductModel>>(context);
+     List<UserModel>  user = Provider.of<List<UserModel>>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -329,7 +338,7 @@ class _AdminState extends State<Admin> {
           ],
         ),
       ),
-      body: _loadScreen(),
+      body: _loadScreen(products: allProducts,users: user),
     );
   }
 }
