@@ -8,6 +8,10 @@ class UserServices{
 
   Stream<List<UserModel>> getUsers()=>_firestore.collection(ref).snapshots().map((snaps) => snaps.docs.map((snap) => UserModel.fromSnapShot(snap.data())).toList());
 
+  Future<void> deleteUser(String id)async{
+   await _firestore.collection(ref).doc(id).delete();
+  }
+
 
 
 }

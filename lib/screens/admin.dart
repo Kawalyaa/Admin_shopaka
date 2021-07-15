@@ -9,6 +9,7 @@ import 'package:shopla_ecommerce_app/model/products_model.dart';
 import 'package:shopla_ecommerce_app/model/user_model.dart';
 import 'package:shopla_ecommerce_app/screens/add_products.dart';
 import 'package:shopla_ecommerce_app/screens/products_screen.dart';
+import 'package:shopla_ecommerce_app/screens/users_screen.dart';
 
 enum Page { DASHBOARD, MANAGE }
 
@@ -43,7 +44,7 @@ class _AdminState extends State<Admin> {
                     fontSize: 24.0,
                     fontWeight: FontWeight.w900),
               ),
-              subtitle: FlatButton.icon(
+              subtitle: TextButton.icon(
                 onPressed: () {},
                 icon: Icon(
                   Icons.attach_money,
@@ -68,7 +69,9 @@ class _AdminState extends State<Admin> {
                     padding: const EdgeInsets.all(5.0),
                     child: SingleCard(
                       activeColor: activeColor,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, UsersList.id);
+                      },
                       icon: Icon(
                         Icons.people_outline,
                         color: Colors.black,
@@ -230,7 +233,7 @@ class _AdminState extends State<Admin> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
             if (categoryController.text != null) {
               categoryServices.createCategory(categoryController.text);
@@ -242,7 +245,7 @@ class _AdminState extends State<Admin> {
             'ADD',
           ),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
@@ -271,7 +274,7 @@ class _AdminState extends State<Admin> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
             if (brandController.text != null) {
               brandServices.createBrand(brandController.text);
@@ -281,7 +284,7 @@ class _AdminState extends State<Admin> {
           },
           child: Text('ADD'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
@@ -304,7 +307,7 @@ class _AdminState extends State<Admin> {
         title: Row(
           children: <Widget>[
             Expanded(
-              child: FlatButton.icon(
+              child: TextButton.icon(
                 onPressed: () {
                   setState(() {
                     _selectedPage = Page.DASHBOARD;
@@ -320,7 +323,7 @@ class _AdminState extends State<Admin> {
               ),
             ),
             Expanded(
-              child: FlatButton.icon(
+              child: TextButton.icon(
                 onPressed: () {
                   setState(() {
                     _selectedPage = Page.MANAGE;
