@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shopla_ecommerce_app/db/order_services.dart';
 import 'package:shopla_ecommerce_app/db/products.dart';
 import 'package:shopla_ecommerce_app/db/user_service.dart';
+import 'package:shopla_ecommerce_app/model/order_model.dart';
 import 'package:shopla_ecommerce_app/model/products_model.dart';
 import 'package:shopla_ecommerce_app/model/user_model.dart';
 import 'package:shopla_ecommerce_app/screens/products_screen.dart';
@@ -8,6 +10,8 @@ import 'package:shopla_ecommerce_app/screens/users_screen.dart';
 import 'screens/admin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+
+import 'screens/orders_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +27,8 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<ProductModel>>(
             create: (_) => ProductService().getAllProducts(), initialData: []),
         StreamProvider<List<UserModel>>(
-            create: (_) => UserServices().getUsers(), initialData: [])
+            create: (_) => UserServices().getUsers(), initialData: []),
+        StreamProvider<List<OrderModel>>(create: (_)=>OrderServices().ordersList(), initialData: [])    
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,7 +36,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.red),
         routes: {
           ProductsScreen.id: (context) => ProductsScreen(),
-          UsersList.id: (context) => UsersList()
+          UsersList.id: (context) => UsersList(),
+          OrdersScreen.id:(context)=>OrdersScreen()
         },
       ),
     );

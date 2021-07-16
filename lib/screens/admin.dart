@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:shopla_ecommerce_app/components/adminCard.dart';
 import 'package:shopla_ecommerce_app/db/category.dart';
 import 'package:shopla_ecommerce_app/db/brand.dart';
+import 'package:shopla_ecommerce_app/model/order_model.dart';
 import 'package:shopla_ecommerce_app/model/products_model.dart';
 import 'package:shopla_ecommerce_app/model/user_model.dart';
 import 'package:shopla_ecommerce_app/screens/add_products.dart';
+import 'package:shopla_ecommerce_app/screens/orders_screen.dart';
 import 'package:shopla_ecommerce_app/screens/products_screen.dart';
 import 'package:shopla_ecommerce_app/screens/users_screen.dart';
 
@@ -29,8 +31,20 @@ class _AdminState extends State<Admin> {
 
   CategoryServices categoryServices = CategoryServices();
   BrandServices brandServices = BrandServices();
+  List myCategories = [];
 
-  Widget _loadScreen({List products,List users}) {
+@override
+void initState() {
+    super.initState();
+    getCategories();
+}
+
+  Future<void> getCategories()async{
+          myCategories= await categoryServices.getCategories();
+
+  }
+
+  Widget _loadScreen({List products,List users,List category,List orders}) {
     switch (_selectedPage) {
       case Page.DASHBOARD:
         return Column(
@@ -90,7 +104,7 @@ class _AdminState extends State<Admin> {
                         color: Colors.black,
                       ),
                       iconName: 'Categories',
-                      value: '23',
+                      value: '${category?.length??0}',
                     ),
                   ),
                   Padding(
@@ -125,13 +139,15 @@ class _AdminState extends State<Admin> {
                     padding: const EdgeInsets.all(5.0),
                     child: SingleCard(
                       activeColor: activeColor,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, OrdersScreen.id);
+                      },
                       icon: Icon(
                         Icons.shopping_cart,
                         color: Colors.black,
                       ),
                       iconName: 'Oders',
-                      value: '5',
+                      value: '${orders?.length??0}',
                     ),
                   ),
                   Padding(
@@ -299,6 +315,9 @@ class _AdminState extends State<Admin> {
   Widget build(BuildContext context) {
      List<ProductModel>   allProducts = Provider.of<List<ProductModel>>(context);
      List<UserModel>  user = Provider.of<List<UserModel>>(context);
+     List<OrderModel> ordersList = Provider.of<List<OrderModel>>(context);
+
+List<OrderModel> newOrders = ordersList.where((item) => item.orderStatus=='sorting').toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -319,7 +338,7 @@ class _AdminState extends State<Admin> {
                       ? activeColor
                       : notActiveColor,
                 ),
-                label: Text('Dashboard'),
+                label: Text('Dashboard',style: TextStyle(color:Colors.black,fontSize: 18),),
               ),
             ),
             Expanded(
@@ -335,13 +354,13 @@ class _AdminState extends State<Admin> {
                       ? activeColor
                       : notActiveColor,
                 ),
-                label: Text('Manage'),
+                label: Text('Manage',style: TextStyle(color:Colors.black,fontSize: 18)),
               ),
             )
           ],
         ),
       ),
-      body: _loadScreen(products: allProducts,users: user),
-    );
+      body: _loadScreen(products: allProducts,users: user,category: myCategories,orders: newOrders
+    ),);
   }
 }

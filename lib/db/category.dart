@@ -15,7 +15,7 @@ class CategoryServices {
         .set({'categoryName': name});
   }
 
-  Future<List<DocumentSnapshot>> getCategories() => _firestore
+  Future<List<DocumentSnapshot>> getCategories()async => await _firestore
       .collection(_ref)
       .get()
       .then((snaps) => snaps.docs);
