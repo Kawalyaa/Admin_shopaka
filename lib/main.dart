@@ -5,6 +5,7 @@ import 'package:shopla_ecommerce_app/db/user_service.dart';
 import 'package:shopla_ecommerce_app/model/order_model.dart';
 import 'package:shopla_ecommerce_app/model/products_model.dart';
 import 'package:shopla_ecommerce_app/model/user_model.dart';
+import 'package:shopla_ecommerce_app/screens/order_details_screen.dart';
 import 'package:shopla_ecommerce_app/screens/products_screen.dart';
 import 'package:shopla_ecommerce_app/screens/users_screen.dart';
 import 'screens/admin.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         routes: {
           ProductsScreen.id: (context) => ProductsScreen(),
           UsersList.id: (context) => UsersList(),
-          OrdersScreen.id:(context)=>OrdersScreen()
+          OrdersScreen.id:(context)=>OrdersScreen(),
+          OrderDetailsScreen.id:(context)=>OrderDetailsScreen(),
         },
       ),
     );

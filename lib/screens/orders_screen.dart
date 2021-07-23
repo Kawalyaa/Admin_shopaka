@@ -13,8 +13,8 @@ class OrdersScreen extends StatelessWidget {
 
     List<OrderModel> newOrders =
         ordersList.where((item) => item.orderStatus == 'sorting').toList();
-    List<OrderModel> orderOnTheWay =
-        ordersList.where((item) => item.orderStatus == 'sorting').toList();
+    List<OrderModel> dispatchedOrders =
+        ordersList.where((item) => item.orderStatus == 'dispatched').toList();
     List<OrderModel> deliveredOrders =
         ordersList.where((item) => item.orderStatus == 'sorting').toList();
     List<OrderModel> canceledOrders =
@@ -42,10 +42,37 @@ class OrdersScreen extends StatelessWidget {
             firstInfo2: 'Date',
             secondInfo2:
                 '${DateFormat().format(newOrders[index].time.toDate())}',
+            model: OrderModel(
+              id: newOrders[index].id,
+              totalPrice: newOrders[index].totalPrice,
+              time: newOrders[index].time,
+              orderNumber: newOrders[index].orderNumber,
+              orderStatus: newOrders[index].orderStatus,
+              ordersList: newOrders[index].ordersList,
+              paymentMethod: newOrders[index].paymentMethod,
+              paymentStatus: newOrders[index].paymentStatus,
+              pickupStation: newOrders[index].pickupStation,
+              address: newOrders[index].address,
+              email: newOrders[index].email,
+            ),
           ),
         ),
       ),
     );
   }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

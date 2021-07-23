@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shopla_ecommerce_app/model/order_model.dart';
+import 'package:shopla_ecommerce_app/screens/order_details_screen.dart';
 
 import '../constants.dart';
 class SingleOrder extends StatelessWidget {
@@ -6,7 +8,8 @@ class SingleOrder extends StatelessWidget {
   final String secondInfo;
    final String firstInfo2;
   final String secondInfo2;
-  SingleOrder({this.firstInfo,this.secondInfo,this.firstInfo2,this.secondInfo2});
+  final OrderModel model;
+  SingleOrder({this.firstInfo,this.secondInfo,this.firstInfo2,this.secondInfo2,this.model});
 
  
 
@@ -19,6 +22,7 @@ class SingleOrder extends StatelessWidget {
             child: ListTile(
               contentPadding: EdgeInsets.only(left: 4, right: 4.0),
               leading: Column(
+              
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _orderRichText(firstInfo, secondInfo),
@@ -28,7 +32,9 @@ class SingleOrder extends StatelessWidget {
               ),
               trailing: ElevatedButton(
                 style: ElevatedButton.styleFrom(primary:kColorRed),
-                  onPressed: () {}, child: Text('Details')),
+                  onPressed: () {
+                    Navigator.pushNamed(context, OrderDetailsScreen.id,arguments: OrderDetailsScreen(model:model),);
+                  }, child: Text('Details')),
             ),
           ),
     );
