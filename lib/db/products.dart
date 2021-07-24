@@ -57,6 +57,8 @@ class ProductService {
     _firestore.collection(ref).doc(id).delete();
   }
 
+  
+
   Stream<List<ProductModel>> getAllProducts() =>
       _firestore.collection(ref).snapshots().map((snaps) => snaps.docs
           .map((snap) => ProductModel.fromSnapShot(snap.data()))

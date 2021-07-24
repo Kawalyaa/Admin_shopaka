@@ -20,7 +20,7 @@ class OrderModel {
   final String orderStatus;
   final String orderNumber;
   final double totalPrice;
-  final String deliveryDate;
+  final  deliveryDate;
   final time;
   final String userName;
   final String id;
