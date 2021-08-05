@@ -57,7 +57,17 @@ class ProductService {
     _firestore.collection(ref).doc(id).delete();
   }
 
-  
+  Future<void> updateFeatured(bool featured,String name) async {
+    _firestore
+        .collection('Products')
+        .where('name', isEqualTo: name)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({'featured': !featured});
+      });
+    });
+  }
 
   Stream<List<ProductModel>> getAllProducts() =>
       _firestore.collection(ref).snapshots().map((snaps) => snaps.docs

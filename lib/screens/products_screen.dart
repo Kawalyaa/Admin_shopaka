@@ -4,7 +4,6 @@ import 'package:shopla_ecommerce_app/components/single_product.dart';
 import 'package:shopla_ecommerce_app/constants.dart';
 import 'package:shopla_ecommerce_app/db/products.dart';
 import 'package:shopla_ecommerce_app/model/products_model.dart';
-
 class ProductsScreen extends StatefulWidget {
   static const String id = 'productsScreen';
   @override
@@ -14,22 +13,12 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   ProductService productService = ProductService();
 
-  //  @override
-  // void initState() {
-  //   super.initState();
-  //   loadProducts();
-  // }
+  
 
 
   List<ProductModel> allProducts = [];
 
-  // loadProducts() async {
-
-  //       allProducts = await productService.getProducts();
-
-  // }
-
- 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +44,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
             )
           : GridView.builder(
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 200,
-                childAspectRatio: 1.5 / 2,
-                crossAxisSpacing: 20,
+                childAspectRatio: 1.23 / 2,
+                crossAxisSpacing: 15,
                 mainAxisSpacing: 20),
               itemCount: allProducts.length,
               itemBuilder: (context, index) => SingleProduct(
@@ -64,6 +53,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     images: allProducts[index].images,
                     price: allProducts[index].price,
                     oldPrice: allProducts[index].oldPrice,
+                    featured: allProducts[index].featured,
+                    toggleFeatured: (){
+                      productService.updateFeatured(allProducts[index].featured,allProducts[index].name);
+                    },
                     deleteCallback: ()async{
                       await productService.removeProduct(allProducts[index].id);
                     },

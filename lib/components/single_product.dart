@@ -22,6 +22,7 @@ class SingleProduct extends StatelessWidget {
   final heroTag;
   final List description;
   final List keyFeatures;
+  Function toggleFeatured;
 
   SingleProduct({
     this.id,
@@ -43,6 +44,7 @@ class SingleProduct extends StatelessWidget {
     this.description,
     this.keyFeatures,
     this.color,
+    this.toggleFeatured
   });
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class SingleProduct extends StatelessWidget {
                   GestureDetector(
                     onTap: deleteCallback,
                     child: Icon(
-                       Icons.delete,
+                      Icons.delete,
                       color: kColorRed,
                     ),
                   )
@@ -108,6 +110,14 @@ class SingleProduct extends StatelessWidget {
                   style:
                       TextStyle(color: kColorRed, fontWeight: FontWeight.bold),
                 ),
+                SizedBox(height: 10.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary:
+                          featured ? Colors.greenAccent[700] : Colors.black38),
+                  onPressed: toggleFeatured,
+                  child: Text('Featured'),
+                )
               ],
             ),
           ],
