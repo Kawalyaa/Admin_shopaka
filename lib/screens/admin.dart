@@ -12,6 +12,8 @@ import 'package:shopla_ecommerce_app/screens/add_products.dart';
 import 'package:shopla_ecommerce_app/screens/orders_screen.dart';
 import 'package:shopla_ecommerce_app/screens/products_screen.dart';
 import 'package:shopla_ecommerce_app/screens/users_screen.dart';
+import 'package:collection/collection.dart';
+
 
 enum Page { DASHBOARD, MANAGE }
 
@@ -33,48 +35,52 @@ class _AdminState extends State<Admin> {
   BrandServices brandServices = BrandServices();
   List myCategories = [];
 
-@override
-void initState() {
+  @override
+  void initState() {
     super.initState();
     getCategories();
-}
-
-  Future<void> getCategories()async{
-          myCategories= await categoryServices.getCategories();
-
   }
 
-  Widget _loadScreen({List products,List users,List category,List orders}) {
+  Future<void> getCategories() async {
+    myCategories = await categoryServices.getCategories();
+  }
+
+  Widget _loadScreen(
+      {List products,
+      List users,
+      List category,
+      List orders,
+      List canceled,
+      List<OrderModel> delivered}) {
     switch (_selectedPage) {
       case Page.DASHBOARD:
         return Column(
           children: <Widget>[
             ListTile(
-              title: Text(
-                'Revenue',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w900),
-              ),
-              subtitle: TextButton.icon(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.attach_money,
-                  size: 30.0,
-                  color: Colors.cyan,
-                ),
-                label: Text(
-                  '12,000',
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Revenue',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.cyan,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold),
+                      color: Colors.blueGrey,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w900),
                 ),
               ),
-            ),
+              subtitle:  Padding(
+                padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,15.0),
+                child: Text(
+                    'UGX ${delivered.map((product) => product.totalPrice).toList().sum}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+              ),
+              ),
+            
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -91,7 +97,7 @@ void initState() {
                         color: Colors.black,
                       ),
                       iconName: 'Users',
-                      value: '${users?.length??0}',
+                      value: '${users?.length ?? 0}',
                     ),
                   ),
                   Padding(
@@ -104,7 +110,7 @@ void initState() {
                         color: Colors.black,
                       ),
                       iconName: 'Categories',
-                      value: '${category?.length??0}',
+                      value: '${category?.length ?? 0}',
                     ),
                   ),
                   Padding(
@@ -112,14 +118,17 @@ void initState() {
                     child: SingleCard(
                       activeColor: activeColor,
                       onTap: () {
-                        Navigator.pushNamed(context, ProductsScreen.id,);
+                        Navigator.pushNamed(
+                          context,
+                          ProductsScreen.id,
+                        );
                       },
                       icon: Icon(
                         Icons.track_changes,
                         color: Colors.black,
                       ),
                       iconName: 'Products',
-                      value: '${products?.length??0}',
+                      value: '${products?.length ?? 0}',
                     ),
                   ),
                   Padding(
@@ -132,7 +141,7 @@ void initState() {
                         color: Colors.black,
                       ),
                       iconName: 'Sold',
-                      value: '250',
+                      value: '${delivered.length}',
                     ),
                   ),
                   Padding(
@@ -147,7 +156,7 @@ void initState() {
                         color: Colors.black,
                       ),
                       iconName: 'Oders',
-                      value: '${orders?.length??0}',
+                      value: '${orders?.length ?? 0}',
                     ),
                   ),
                   Padding(
@@ -160,7 +169,7 @@ void initState() {
                         color: Colors.black,
                       ),
                       iconName: 'Returns',
-                      value: '0',
+                      value: '${canceled.length}',
                     ),
                   ),
                 ],
@@ -313,11 +322,16 @@ void initState() {
 
   @override
   Widget build(BuildContext context) {
-     List<ProductModel>   allProducts = Provider.of<List<ProductModel>>(context);
-     List<UserModel>  user = Provider.of<List<UserModel>>(context);
-     List<OrderModel> ordersList = Provider.of<List<OrderModel>>(context);
+    List<ProductModel> allProducts = Provider.of<List<ProductModel>>(context);
+    List<UserModel> user = Provider.of<List<UserModel>>(context);
+    List<OrderModel> ordersList = Provider.of<List<OrderModel>>(context);
+    List<OrderModel> deliveredOrders =
+        ordersList.where((item) => item.orderStatus == 'delivered').toList();
+    List<OrderModel> canceledOrders =
+        ordersList.where((item) => item.orderStatus == 'canceled').toList();
 
-List<OrderModel> newOrders = ordersList.where((item) => item.orderStatus=='sorting').toList();
+    List<OrderModel> newOrders =
+        ordersList.where((item) => item.orderStatus == 'sorting').toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -338,7 +352,10 @@ List<OrderModel> newOrders = ordersList.where((item) => item.orderStatus=='sorti
                       ? activeColor
                       : notActiveColor,
                 ),
-                label: Text('Dashboard',style: TextStyle(color:Colors.black,fontSize: 18),),
+                label: Text(
+                  'Dashboard',
+                  style: TextStyle(color: Colors.black, fontSize: 18),
+                ),
               ),
             ),
             Expanded(
@@ -354,13 +371,20 @@ List<OrderModel> newOrders = ordersList.where((item) => item.orderStatus=='sorti
                       ? activeColor
                       : notActiveColor,
                 ),
-                label: Text('Manage',style: TextStyle(color:Colors.black,fontSize: 18)),
+                label: Text('Manage',
+                    style: TextStyle(color: Colors.black, fontSize: 18)),
               ),
             )
           ],
         ),
       ),
-      body: _loadScreen(products: allProducts,users: user,category: myCategories,orders: newOrders
-    ),);
+      body: _loadScreen(
+          products: allProducts,
+          users: user,
+          category: myCategories,
+          orders: newOrders,
+          delivered: deliveredOrders,
+          canceled: canceledOrders),
+    );
   }
 }
