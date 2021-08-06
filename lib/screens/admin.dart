@@ -9,11 +9,13 @@ import 'package:shopla_ecommerce_app/model/order_model.dart';
 import 'package:shopla_ecommerce_app/model/products_model.dart';
 import 'package:shopla_ecommerce_app/model/user_model.dart';
 import 'package:shopla_ecommerce_app/screens/add_products.dart';
+import 'package:shopla_ecommerce_app/screens/brand_list.dart';
 import 'package:shopla_ecommerce_app/screens/orders_screen.dart';
 import 'package:shopla_ecommerce_app/screens/products_screen.dart';
 import 'package:shopla_ecommerce_app/screens/users_screen.dart';
 import 'package:collection/collection.dart';
 
+import 'category_list.dart';
 
 enum Page { DASHBOARD, MANAGE }
 
@@ -68,19 +70,18 @@ class _AdminState extends State<Admin> {
                       fontWeight: FontWeight.w900),
                 ),
               ),
-              subtitle:  Padding(
-                padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,15.0),
+              subtitle: Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 15.0),
                 child: Text(
-                    'UGX ${delivered.map((product) => product.totalPrice).toList().sum}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.cyan,
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  'UGX ${delivered.map((product) => product.totalPrice).toList().sum}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.cyan,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-              ),
-            
+            ),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -197,7 +198,9 @@ class _AdminState extends State<Admin> {
             ListTile(
               leading: Icon(Icons.change_history),
               title: Text('Products List'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, ProductsScreen.id);
+              },
             ),
             Divider(),
             ListTile(
@@ -211,8 +214,11 @@ class _AdminState extends State<Admin> {
             ListTile(
               leading: Icon(Icons.category),
               title: Text('Category List'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, CategoryList.id);
+              },
             ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.check_circle_outline),
               title: Text('Add Brand'),
@@ -222,15 +228,11 @@ class _AdminState extends State<Admin> {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.add),
-              title: Text('Add Products'),
-              onTap: () {},
-            ),
-            Divider(),
-            ListTile(
               leading: Icon(Icons.library_books),
               title: Text('Brand List'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, BrandList.id);
+              },
             ),
           ],
         );
@@ -370,6 +372,7 @@ class _AdminState extends State<Admin> {
                   color: _selectedPage == Page.MANAGE
                       ? activeColor
                       : notActiveColor,
+                      size: 30,
                 ),
                 label: Text('Manage',
                     style: TextStyle(color: Colors.black, fontSize: 18)),
