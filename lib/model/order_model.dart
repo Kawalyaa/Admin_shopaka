@@ -19,7 +19,7 @@ class OrderModel {
   final List pickupStation;
   final String orderStatus;
   final String orderNumber;
-  final double totalPrice;
+  final int totalPrice;
   final  deliveryDate;
   final time;
   final String userName;

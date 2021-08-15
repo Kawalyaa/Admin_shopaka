@@ -329,12 +329,7 @@ class _AddProductsState extends State<AddProducts> {
                           controller: descriptionController,
                           //keyboardType: TextInputType.number,
                           decoration: InputDecoration(hintText: 'Description'),
-                          // validator: (value) {
-                          //   if (value.isEmpty) {
-                          //     return ('Description field should not be empty');
-                          //   }
-                          //   return null;
-                          // },
+                          
                         ),
                         ElevatedButton(onPressed: (){
                           if(descriptionController.text.isNotEmpty){
@@ -579,7 +574,6 @@ class _AddProductsState extends State<AddProducts> {
     if (_formKey.currentState.validate()) {
       setState(() => isLoading = true);
       if (image1 != null && image2 != null && image3 != null) {
-        if (selectedSize.isNotEmpty) {
           final FirebaseStorage storage = FirebaseStorage.instance;
           String imageUrl1;
           String imageUrl2;
@@ -617,8 +611,8 @@ class _AddProductsState extends State<AddProducts> {
             List<String> imageList = [imageUrl1, imageUrl2, imageUrl3];
             productService.uploadProduct(
               productName: productNameController.text,
-              price: double.parse(priceController.text),
-              oldPrice: double.parse(oldPriceController.text),
+              price: int.parse(priceController.text),
+              oldPrice: int.parse(oldPriceController.text),
               size: selectedSize,
               category: _currentCategory,
               brand: _currentBrand,
@@ -635,10 +629,7 @@ class _AddProductsState extends State<AddProducts> {
             Navigator.pop(context);
             Fluttertoast.showToast(msg: 'Product added');
           });
-        } else {
-          setState(() => isLoading = false);
-          Fluttertoast.showToast(msg: 'Select atleat one Size');
-        }
+       
       } else {
         setState(() => isLoading = false);
         Fluttertoast.showToast(msg: 'All images must be provided');

@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 
 class ProductService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String ref = 'Products';
+  String ref = 'Products2';
   String userRef = 'users';
   String orderRef = 'allOrders';
   var dateTime = DateTime.now();
@@ -16,8 +16,8 @@ class ProductService {
     List size,
     List images,
     List colors,
-    double price,
-    double oldPrice,
+    int price,
+    int oldPrice,
     int quantity,
     bool featured,
     bool favorite,
@@ -75,4 +75,3 @@ class ProductService {
           .toList());
 }
 
-//where('id',isEqualTo: id)
