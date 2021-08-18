@@ -155,8 +155,8 @@ class _AddProductsState extends State<AddProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: white,
-          leading: Icon(Icons.close, color: black),
           title: Text(
             'Add Products',
             style: TextStyle(color: black),
@@ -175,20 +175,21 @@ class _AddProductsState extends State<AddProducts> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: OutlineButton(
+                                child: OutlinedButton(
                                   onPressed: () {
                                     _selectImage(
                                         ImagePicker.pickImage(
                                             source: ImageSource.gallery),
                                         1);
                                   },
-                                  shape: RoundedRectangleBorder(
+                                  style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  borderSide: BorderSide(
+                                  side: BorderSide(
                                     color: grey.withOpacity(0.5),
                                     width: 2.0,
-                                  ),
+                                  ),),
+                                  
                                   child: _displayChild(image1),
                                 ),
                               ),
@@ -196,20 +197,21 @@ class _AddProductsState extends State<AddProducts> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: OutlineButton(
+                                child: OutlinedButton(
                                   onPressed: () {
                                     _selectImage(
                                         ImagePicker.pickImage(
                                             source: ImageSource.gallery),
                                         2);
                                   },
-                                  shape: RoundedRectangleBorder(
+                                  style: OutlinedButton.styleFrom( shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  borderSide: BorderSide(
+                                  side: BorderSide(
                                     color: grey.withOpacity(0.5),
                                     width: 2.0,
-                                  ),
+                                  ),),
+                                 
                                   child: _displayChild(image2),
                                 ),
                               ),
@@ -217,20 +219,21 @@ class _AddProductsState extends State<AddProducts> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: OutlineButton(
+                                child: OutlinedButton(
                                   onPressed: () {
                                     _selectImage(
                                         ImagePicker.pickImage(
                                             source: ImageSource.gallery),
                                         3);
                                   },
-                                  shape: RoundedRectangleBorder(
+                                  style: OutlinedButton.styleFrom( shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  borderSide: BorderSide(
+                                  side: BorderSide(
                                     color: grey.withOpacity(0.5),
                                     width: 2.0,
-                                  ),
+                                  ),),
+                                 
                                   child: _displayChild(image3),
                                 ),
                               ),
@@ -254,11 +257,9 @@ class _AddProductsState extends State<AddProducts> {
                             },
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                       
                             // Category button section
-                            Padding(
+                            Row(children: [    Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Category: ',
@@ -271,12 +272,12 @@ class _AddProductsState extends State<AddProducts> {
                               items: categoriesDropDown,
                               onChanged: changeSelectedCategory,
                               value: _currentCategory,
-                            ),
+                            ),],),
+                        
 
                             // Brands button section
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  15.0, 8.0, 8.0, 8.0),
+                            Row(children: [  Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Brand',
                                 style: TextStyle(color: Color(0xFFFF0025)),
@@ -288,9 +289,9 @@ class _AddProductsState extends State<AddProducts> {
                                 setState(() => _currentBrand = selectedBrand);
                               },
                               value: _currentBrand,
-                            )
-                          ],
-                        ),
+                            ),],),
+                          
+            
                         TextFormField(
                           controller: quantityController,
                           keyboardType: TextInputType.number,

@@ -14,7 +14,7 @@ class OrderDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final OrderDetailsScreen args = ModalRoute.of(context).settings.arguments;
     CollectionReference _firestore =
-        FirebaseFirestore.instance.collection('allOrders');
+        FirebaseFirestore.instance.collection('orders');
 
     return Scaffold(
       appBar: AppBar(
@@ -213,10 +213,8 @@ class OrderDetailsScreen extends StatelessWidget {
             SizedBox(height: 20),
             _statusButton(() async {
               await OrderServices().removeOrder(args.model.orderNumber);
-                     
-                }, 'DELETE'),
-                            SizedBox(height: 10),
-
+            }, 'DELETE'),
+            SizedBox(height: 10),
           ],
         ),
       ),
@@ -253,18 +251,31 @@ class OrderDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                leading: Container(
-                    width: 50,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          itemsList[index]['image'],
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    )),
+                leading: Stack(
+                  children: [
+                    Container(
+                        width: 50,
+                        height: 60,
+                        child: Center(
+                          child: Icon(
+                            Icons.error,
+                            color: Colors.black,
+                          ),
+                        )),
+                    Container(
+                        width: 50,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              itemsList[index]['image'],
+                            ),
+                            fit: BoxFit.contain,
+                          ),
+                        )),
+                  ],
+                ),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -302,6 +313,4 @@ class OrderDetailsScreen extends StatelessWidget {
           ]),
     );
   }
-
-
 }

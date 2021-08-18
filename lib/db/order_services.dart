@@ -4,7 +4,7 @@ import 'package:shopla_ecommerce_app/model/order_model.dart';
 
 class OrderServices {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String ref = 'allOrders';
+  String ref = 'orders';
 
   Stream<List<OrderModel>> ordersList() =>
       _firestore.collection(ref).snapshots().map((snaps) => snaps.docs
@@ -18,6 +18,5 @@ class OrderServices {
         documentSnapshot.reference.delete();
       });
     });
-   //await _firestore.collection(ref).doc(id).delete();
   }
 }
