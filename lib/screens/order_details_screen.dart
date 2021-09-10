@@ -37,7 +37,7 @@ class OrderDetailsScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0),
               child: Center(
                 child: Text(
-                  'ORDERD ITEMS',
+                  'ORDERED ITEMS',
                   style: TextStyle(
                     color: kColorRed,
                     fontWeight: FontWeight.bold,
