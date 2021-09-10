@@ -126,7 +126,7 @@ class _OrdersScreenState extends State<OrdersScreen>
                   firstInfo2: 'Date',
                   deliveryMethod: orderList[index].deliveryMethod,
                   secondInfo2:
-                      '${DateFormat().format(orderList[index].time.toDate())}',
+                      '${DateFormat('MM/dd/yyyy   hh:mm a').format(orderList[index].time.toDate())}',
                   model: OrderModel(
                     id: orderList[index].id,
                     totalPrice: orderList[index].totalPrice,
